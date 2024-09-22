@@ -30,6 +30,7 @@ namespace OrderService.Controllers
             if (product == null)
                 return BadRequest("Product not found");
 
+            order.Id = Orders.Max(p => p.Id) + 1;
             Orders.Add(order);
             return Ok(order);
         }
@@ -54,6 +55,22 @@ namespace OrderService.Controllers
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Product>(json);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Order> GetOrderById(int id)
+        {
+            var order = Orders.FirstOrDefault(o => o.Id == id);
+            if (order == null)
+                return NotFound("Order not found");
+
+            return Ok(order);
+        }
+
+        [HttpGet]
+        public ActionResult<List<Order>> GetAllOrders()
+        {
+            return Ok(Orders);
         }
     }
 
