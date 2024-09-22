@@ -12,8 +12,12 @@ namespace OrderService.Controllers
         private readonly string _userServiceUrl = "https://localhost:7134/api/user";
         private readonly string _productServiceUrl = "https://localhost:7178/api/product";
 
-        private static readonly List<Order> Orders = new List<Order>();
-
+        //private static readonly List<Order> Orders = new List<Order>();
+        private static readonly List<Order> Orders = new List<Order>
+        {
+         new Order { Id = 1, UserId = 1, ProductId = 1, Quantity = 1 },
+         new Order { Id = 2, UserId = 2, ProductId = 2, Quantity = 2 }
+        };
         public OrderController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
@@ -29,6 +33,7 @@ namespace OrderService.Controllers
             var product = await GetProductById(order.ProductId);
             if (product == null)
                 return BadRequest("Product not found");
+
 
             order.Id = Orders.Max(p => p.Id) + 1;
             Orders.Add(order);
