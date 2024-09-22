@@ -27,5 +27,13 @@ namespace ProductService.Controllers
         {
             return Ok(Products);
         }
+
+        [HttpPost]
+        public ActionResult<Product> AddProduct([FromBody] Product newProduct)
+        {
+            newProduct.Id = Products.Max(p => p.Id) + 1;
+            Products.Add(newProduct);
+            return CreatedAtAction(nameof(GetProduct), new { id = newProduct.Id }, newProduct);
+        }
     }
 }

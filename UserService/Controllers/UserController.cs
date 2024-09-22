@@ -27,5 +27,14 @@ namespace UserService.Controllers
         {
             return Ok(Users);
         }
+
+        [HttpPost]
+        public ActionResult<User> AddUser([FromBody] User newUser)
+        {
+            newUser.Id = Users.Max(u => u.Id) + 1;
+            Users.Add(newUser);
+            return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
+        }
+
     }
 }
