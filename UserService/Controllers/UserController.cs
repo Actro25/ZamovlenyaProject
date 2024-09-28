@@ -36,5 +36,30 @@ namespace UserService.Controllers
             return CreatedAtAction(nameof(GetUser), new { id = newUser.Id }, newUser);
         }
 
+        [HttpPut("{id}")]
+        public ActionResult UpdateUser(int id, [FromBody] User updatedUser)
+        {
+            var existingUser = Users.FirstOrDefault(u => u.Id == id);
+            if (existingUser == null)
+                return NotFound();
+
+            // Оновлення полів
+            existingUser.Name = updatedUser.Name;
+            existingUser.Email = updatedUser.Email;
+
+            return Ok(existingUser);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteOrder(int id)
+        {
+            var user = Users.FirstOrDefault(o => o.Id == id);
+            if (user == null)
+                return NotFound("User not found");
+
+            Users.Remove(user);
+            return Ok($"User with ID {id} deleted.");
+        }
+
     }
 }

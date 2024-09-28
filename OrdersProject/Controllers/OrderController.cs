@@ -40,6 +40,40 @@ namespace OrderService.Controllers
             return Ok(order);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Order>> UpdateOrder(int id, [FromBody] Order updatedOrder)
+        {
+            var existingOrder = Orders.FirstOrDefault(o => o.Id == id);
+            if (existingOrder == null)
+                return NotFound("Order not found");
+
+            var user = await GetUserById(updatedOrder.UserId);
+            if (user == null)
+                return BadRequest("User not found");
+
+            var product = await GetProductById(updatedOrder.ProductId);
+            if (product == null)
+                return BadRequest("Product not found");
+
+            // Обновление полей существующего заказа
+            existingOrder.UserId = updatedOrder.UserId;
+            existingOrder.ProductId = updatedOrder.ProductId;
+            existingOrder.Quantity = updatedOrder.Quantity;
+
+            return Ok(existingOrder);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteOrder(int id)
+        {
+            var order = Orders.FirstOrDefault(o => o.Id == id);
+            if (order == null)
+                return NotFound("Order not found");
+
+            Orders.Remove(order);
+            return Ok($"Order with ID {id} deleted.");
+        }
+
         private async Task<User?> GetUserById(int userId)
         {
             var client = _httpClientFactory.CreateClient();

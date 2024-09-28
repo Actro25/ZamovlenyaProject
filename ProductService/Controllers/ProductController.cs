@@ -35,5 +35,29 @@ namespace ProductService.Controllers
             Products.Add(newProduct);
             return CreatedAtAction(nameof(GetProduct), new { id = newProduct.Id }, newProduct);
         }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateProduct(int id, [FromBody] Product updatedProduct)
+        {
+            var existingProduct = Products.FirstOrDefault(p => p.Id == id);
+            if (existingProduct == null)
+                return NotFound();
+
+            existingProduct.Name = updatedProduct.Name;
+            existingProduct.Price = updatedProduct.Price;
+
+            return Ok(existingProduct);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteOrder(int id)
+        {
+            var product = Products.FirstOrDefault(o => o.Id == id);
+            if (product == null)
+                return NotFound("Product not found");
+
+            Products.Remove(product);
+            return Ok($"Product with ID {id} deleted.");
+        }
     }
 }
