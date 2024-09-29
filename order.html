@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microservices Order API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .api-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .output {
+      background-color: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Microservices Order API</h1>
+  <div class="api-container">
+    <h2>Create an Order</h2>
+    <button id="createOrderBtn">Create Order</button>
+    
+    <h2>Get Order by Status</h2>
+    <input type="text" id="statusInput" placeholder="Enter status (0, 1, or 2)">
+    <button id="getOrderStatusBtn">Get Orders</button>
+    
+    <h2>Update Order Status</h2>
+    <input type="text" id="orderIdInput" placeholder="Enter Order ID">
+    <input type="text" id="newStatusInput" placeholder="Enter new status (0, 1, or 2)">
+    <button id="updateOrderStatusBtn">Update Status</button>
+    
+    <h2>Get Secure Data</h2>
+    <button id="getSecureDataBtn">Get Secure Data</button>
+
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    // Base API URL
+    const apiUrl = 'https://your-api-url.com/api/Order';
+
+    // Create Order
+    document.getElementById('createOrderBtn').addEventListener('click', async () => {
+      const order = {
+        userId: 1,
+        productId: 100,
+        quantity: 2,
+        status: 1
+      };
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+      const data = await response.json();
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    });
+
+    // Get Orders by Status
+    document.getElementById('getOrderStatusBtn').addEventListener('click', async () => {
+      const status = document.getElementById('statusInput').value;
+      const response = await fetch(`${apiUrl}/status/${status}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    });
+
+    <!-- // Update Order Status -->
+    <!-- document.getElementById('updateOrderStatusBtn').addEventListener('click', async () => { -->
+      <!-- const orderId = document.getElementById('orderIdInput').value; -->
+      <!-- const newStatus = document.getElementById('newStatusInput').value; -->
+      <!-- const response = await fetch(`${apiUrl}/${orderId}/status`, { -->
+        <!-- method: 'PUT', -->
+        <!-- headers: { 'Content-Type': 'application/json' }, -->
+        <!-- body: JSON.stringify({ status: parseInt(newStatus) }) -->
+      <!-- }); -->
+      <!-- if (response.ok) { -->
+        <!-- document.getElementById('output').textContent = `Order ${orderId} updated successfully.`; -->
+      <!-- } else { -->
+        <!-- document.getElementById('output').textContent = 'Failed to update order.'; -->
+      <!-- } -->
+    <!-- }); -->
+
+    <!-- // Get Secure Data -->
+    <!-- document.getElementById('getSecureDataBtn').addEventListener('click', async () => { -->
+      <!-- const response = await fetch(`${apiUrl}/secure-data`, { -->
+        <!-- method: 'GET', -->
+        <!-- headers: { -->
+          <!-- 'Authorization': 'Bearer your-jwt-token' -->
+        <!-- } -->
+      <!-- }); -->
+      <!-- const data = await response.json(); -->
+      <!-- document.getElementById('output').textContent = JSON.stringify(data, null, 2); -->
+    <!-- }); -->
+	
+	
+	
+	// Update Order Status
+document.getElementById('updateOrderStatusBtn').addEventListener('click', async () => {
+  const orderId = document.getElementById('orderIdInput').value;
+  const newStatus = document.getElementById('newStatusInput').value;
+
+  // Отримати токен з localStorage
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    document.getElementById('output').textContent = 'Token not found. Please login.';
+    return;
+  }
+
+  const response = await fetch(`${apiUrl}/${orderId}/status`, {
+    method: 'PUT',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`  // Додаємо токен в заголовок
+    },
+    body: JSON.stringify({ status: parseInt(newStatus) })
+  });
+
+  if (response.ok) {
+    document.getElementById('output').textContent = `Order ${orderId} updated successfully.`;
+  } else {
+    document.getElementById('output').textContent = 'Failed to update order.';
+  }
+});
+
+// Get Secure Data
+document.getElementById('getSecureDataBtn').addEventListener('click', async () => {
+  // Отримати токен з localStorage
+  const token = localStorage.getItem('authToken');
+
+  if (!token) {
+    document.getElementById('output').textContent = 'Token not found. Please login.';
+    return;
+  }
+
+  const response = await fetch(`${apiUrl}/secure-data`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`  // Додаємо токен в заголовок
+    }
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+  } else {
+    document.getElementById('output').textContent = 'Failed to retrieve secure data.';
+  }
+});
+
+	
+  </script>
+
+</body>
+</html>
