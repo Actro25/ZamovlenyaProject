@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SharedModels;
 
 namespace UserService.Controllers
@@ -23,6 +24,7 @@ namespace UserService.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult<IEnumerable<User>> GetUsers()
         {
             return Ok(Users);
