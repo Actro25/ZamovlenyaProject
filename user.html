@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Service API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .api-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .output {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>User Service API</h1>
+  <div class="api-container">
+    <h2>Get All Users</h2>
+    <button id="getAllUsersBtn">Get All Users</button>
+    
+    <h2>Get User by ID</h2>
+    <input type="text" id="userIdInput" placeholder="Enter User ID">
+    <button id="getUserByIdBtn">Get User</button>
+
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    // Base API URL
+    const apiUrl = 'https://localhost:7134/api/User';
+
+    // Get All Users
+    document.getElementById('getAllUsersBtn').addEventListener('click', async () => {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+    });
+
+    // Get User by ID
+    document.getElementById('getUserByIdBtn').addEventListener('click', async () => {
+      const userId = document.getElementById('userIdInput').value;
+      const response = await fetch(`${apiUrl}/${userId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      } else {
+        document.getElementById('output').textContent = `User with ID ${userId} not found.`;
+      }
+    });
+  </script>
+
+</body>
+</html>
