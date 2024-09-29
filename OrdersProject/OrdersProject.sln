@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "..\UserServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedModels", "..\SharedModels\SharedModels.csproj", "{5E754908-85CB-4CB7-A12E-03B7F41CB093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenService", "..\TokenService\TokenService.csproj", "{83893E98-166E-497B-AFF4-827CE196FE49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenService", "..\TokenService\TokenService.csproj", "{83893E98-166E-497B-AFF4-827CE196FE49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "..\Gateway\Gateway.csproj", "{40E953D0-F0BB-40F1-A4D0-FB4C4C13FC43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{83893E98-166E-497B-AFF4-827CE196FE49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83893E98-166E-497B-AFF4-827CE196FE49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83893E98-166E-497B-AFF4-827CE196FE49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40E953D0-F0BB-40F1-A4D0-FB4C4C13FC43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40E953D0-F0BB-40F1-A4D0-FB4C4C13FC43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40E953D0-F0BB-40F1-A4D0-FB4C4C13FC43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40E953D0-F0BB-40F1-A4D0-FB4C4C13FC43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
